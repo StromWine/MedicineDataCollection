@@ -1,7 +1,8 @@
 
 ## 前端技术栈
    前端技术栈：react+umi+dva+antd+less
-
+## 脚手架来自
+   https://github.com/mpw0311/antd-umi-sys.git 
 ## 环境准备
     1.首先安装 node，并确保 node 版本是 8 或以上。（mac 下推荐使用 nvm 来管理 node 版本）
         $ node -v
