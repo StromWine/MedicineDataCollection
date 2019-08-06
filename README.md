@@ -1,31 +1,7 @@
-# antd-umi-sys
 
-***如果你喜欢这个项目请给一个⭐，谢谢!***
-
-***Please give me a Star if you like this project.Thank you so much.***
-
-## 简介
-    企业系统，数据可视化平台。
-    推荐浏览器：Google Chrome
-    
-![antd-umi-sys](src/assets/demo_login.png)
-![antd-umi-sys](src/assets/demo.png)
-![antd-umi-sys](src/assets/regionalAnalysis.png)
-![antd-umi-sys](src/assets/vew1.png)
-![antd-umi-sys](src/assets/d3tree.png)
-
-## 前端技术栈 
+## 前端技术栈
    前端技术栈：react+umi+dva+antd+less
-## 特性
-+ 单页面应用；
-+ 模块化、组件化开发；
-+ 结合dva基于 redux 和 redux-saga 的数据流方案；
-+ 约定式路由，无需再维护一份冗余的路由配置，支持权限、动态路由、嵌套路由等；
-+ 插件化，一键实现按需加载、兼容 ie9 、切换 preact等；
-+ 开箱即用，无需安装 react、preact、webpack、react-router、babel、jest 等；
-+ 丰富的Echarts图形组件；
-+ mock模拟数据请求
----
+
 ## 环境准备
     1.首先安装 node，并确保 node 版本是 8 或以上。（mac 下推荐使用 nvm 来管理 node 版本）
         $ node -v
@@ -35,15 +11,12 @@
         $ umi -v
         2.0.0
     3.git地址下载脚手架代码：
-        https://github.com/mpw0311/antd-umi-sys.git
     4.安装依赖模块：
         npm install
     5.启动本地开发：
         npm start
     6.打包发布：
         npm run build
-## 支持区块开发
-    npm run add-page 快速添加一个页面模板,详细请看https://umijs.org/zh/guide/block.html
 ## 目录结构
 
 ```js
