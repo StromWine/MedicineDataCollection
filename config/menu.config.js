@@ -1,7 +1,7 @@
 export default [
     {
         title: "诊疗记录与统计",
-        link: "/sys/regionalAnalysis",
+        //link: "/sys/regionalAnalysis",
         key: "regionalAnalysis",
         icon: "idcard"
     },
