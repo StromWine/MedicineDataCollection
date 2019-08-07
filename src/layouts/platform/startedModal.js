@@ -41,8 +41,8 @@ export default class Started extends PureComponent {
                 style={{ marginTop: 140 }}
             >
                 {/* eslint-disable-next-line */}
-                <p>如果你喜欢这个项目请给一个⭐，谢谢!</p>
-                <p>Please give me a Star if you like this project.Thank you so much.</p>
+//                 <p>如果你喜欢这个项目请给一个⭐，谢谢!</p>
+//                 <p>Please give me a Star if you like this project.Thank you so much.</p>
             </Modal>
         );
     }
