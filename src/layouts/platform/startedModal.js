@@ -13,7 +13,7 @@ export default class Started extends PureComponent {
             clearTimeout(this.timer);
             this.timer = setTimeout(() => {
                 this.setState({
-                    visible: true
+                    visible: false
                 });
             }, 6000)
         }
