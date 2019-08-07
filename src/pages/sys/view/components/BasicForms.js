@@ -13,7 +13,6 @@ import {
   Descriptions,
   Modal,
 } from 'antd';
-import { dispatch } from 'C:/Users/StormWine/AppData/Local/Microsoft/TypeScript/3.5/node_modules/rxjs/internal/observable/pairs';
 
 const {Option} = Select;
 const {Step} = Steps;
