@@ -1,10 +1,13 @@
 import { 
-    fetchLineData,
-    fetchP1TableData,
-    addLabelData,
     fetchBarData,
-    fetchP2TableData,
     fetchP2TableDataByCondition,
+    addFirstStepData,
+    addSecondStepData,
+    addThirdStepData,
+    updateFirstStepData,
+    updateSecondStepData,
+    updateThirdStepData,
+    fetchTableData,
     } from './service';
 import { message } from 'antd';
 
@@ -66,46 +69,16 @@ const data =  {
         }
     ]
 };
-const dd = {
-    columns: [
-        {
-            field: 'date',
-            name: '日期',
-        },
-        {
-            field: 'range1',
-            name: '疑似患者',
-        },
-        {
-            field: 'range2',
-            name: '正常患者',
-        },
-    ],
-    rows: [
-        {
-            date: '20181212',
-            range1: "123",
-            range2: "223",
-        },
-        {
-            date: '20181213',
-            range1: "101",
-            range2: "201",
-            
-        },
-        {
-            date: '20181214',
-            range1: "181",
-            range2: "281",
 
-        }
-    ]
-};
 export default {
 
     namespace: 'viewModel',
 
     state: {
+        allInfoData: [], //全量数据
+        tableData: [], //表格显示数据
+        barData: [],
+        
         p1: {},//line的数据 总数据量和未标注的数据量
         p2: {},
 
@@ -115,6 +88,160 @@ export default {
     },
 
     effects: {
+        //提交表单数据 (保留)
+        *addLabelData( {payload, callback}, {call}){
+            console.log('test payload', payload)
+            const personalInfo = payload.personInfo;
+            const missionInfo = payload.missionFormData;
+            const clinicalInfo = payload.clinicalInfo;
+
+            console.log('test addLabelData', personalInfo);
+            //发送个人信息表单
+            const response = yield call(addFirstStepData, personalInfo);
+            console.log("***************test response*****************", response);
+            if(response.code === "true"){
+                //返回插入的id
+                const id = response.data;
+                //发送第二步和第三步的数据
+                const missionData = {taskDO: missionInfo, userId: id};
+                const clinicalData = {clinicalInfoDO: clinicalInfo, userId: id};
+                const missionRes = yield call(addSecondStepData, missionData);
+                const clinicalRes = yield call(addThirdStepData, clinicalData);
+                if (missionRes.code === "true" && clinicalRes.code === "true"){
+                    message.info("新建标注成功");
+                    if(callback) callback();
+                }
+            }else{
+                message.error('标注数据添加失败,请您重试')
+            }
+        },
+
+        *updateLabelData({payload}, {call, put}){
+            console.log('test payload', payload)
+            const personalInfo = payload.formData.personInfo;
+            const missionInfo = payload.formData.missionFormData;
+            const clinicalInfo = payload.formData.clinicalInfo;
+            const userId = payload.userId;
+
+            console.log('test addLabelData', personalInfo);
+            //发送个人信息表单
+            const personParam = {params: personalInfo, userId: userId};
+            const personResponse = yield call(updateFirstStepData, personParam);
+            if(personResponse.code === "true"){
+                message.info("个人信息更新标注成功");
+            }else{
+                message.error('个人信息更新标注失败,请您重试')
+            }
+            //发送任务更新信息
+            const missionParam = {params: missionInfo, userId: userId};
+            const missionResponse = yield call(updateSecondStepData, missionParam);
+            if(missionResponse.code==="true"){
+                message.info("任务信息更新标注成功");
+            }else{
+                message.error('任务信息更新标注失败,请您重试')
+            }
+            const clinicalParam = {params: clinicalInfo, userId: userId};
+            const clinicalRes = yield call(updateThirdStepData, clinicalParam);
+            if(clinicalRes.code==="true"){
+                message.info("临床信息更新标注成功");
+            }else{
+                message.error('临床信息更新标注失败,请您重试')
+            }
+        },
+
+        //获取表格数据
+        *fetchAllAndTableData( _ , {call, put}){
+            console.log('正在获取table数据')
+            const response = yield call(fetchTableData);
+            if(response.code === 'true'){
+                console.log('test response table ------', response);
+                yield put({
+                    type: 'saveAllInfoData',
+                    payload: response.data,
+                });
+                //处理数据组装成表格显示数据
+                const tableData = [];
+                response.data.map((ele, index) => {
+                    let personalInfo = ele.personalInfo;
+                    let tableEle = {
+                        "id": personalInfo.id,
+                        "name": personalInfo.name,
+                        "gender": personalInfo.gender,
+                        "age": personalInfo.age,
+                        "adhdType": personalInfo.adhdType,
+                        "doctorName": personalInfo.doctorName,
+                    };
+                    tableData.push(tableEle);
+                    return index;
+                });
+                yield put({
+                    type: 'saveTableData',
+                    payload: tableData,
+                });
+            }
+        },
+
+        //获取柱状图数据
+        *fetchBarData(_, {call, put}){
+            const barColumns =  [
+                {
+                    field: 'date',
+                    name: '日期',
+                },
+                {
+                    field: 'range1',
+                    name: 'adI',
+                },
+                {
+                    field: 'range2',
+                    name: 'adHI',
+                },
+                {
+                    field: 'range3',
+                    name: 'adC',
+                },
+                {
+                    field: 'range4',
+                    name: 'normal',
+                },
+            ];
+
+            const response = yield call(fetchBarData);
+            
+            if(response.code === 'true'){
+                console.log('test response', response.data)
+                const data=[];
+                response.data.map(item => {
+                    let dataElement = {
+                        "date": item.date || " ", 
+                        "range1": item.ADHD_I || " ",
+                        "range2": item.ADHD_HI || " ",
+                        "range3": item.ADHD_C || " ",
+                        "range4":item.normal || " ",
+                    };
+                    data.push(dataElement);
+                });
+                yield put({
+                    type:'saveBarData',
+                    payload: {"columns": barColumns, "rows": data}, 
+                });
+
+            }
+        },
+
+
+        //按照条件进行查询
+        *fetchP2TableDataByCondition({payload}, {call, put}){
+            console.log('test payload', payload)
+            const response = yield call(fetchP2TableDataByCondition, payload);
+            if(response){
+                yield put({
+                    type:'saveP2TableData',
+                    payload: response,
+                });
+                
+            }
+        },
 
         //测试用
         *getData({ payload }, { call, put }) {//eslint-disable-line
@@ -126,136 +253,6 @@ export default {
             });
         },
         
-        *getP2Data({ payload }, { call, put }) {//eslint-disable-line
-            console.log("~~~~~~~~~~~~~~~", payload)
-            // const { data = {} } = yield call(api.fetch, { ...payload });
-            yield put({
-                type: 'saveP2Data',
-                payload: dd,
-            });
-        },
-
-
-        /* ~~~~~~~~~~~~~~~~~~~p1~~~~~~~~~~~~~~~~~~~~~~ */
-        //获取画图数据
-        *fetchLineData(_ ,{ call, put}){
-            const response = yield call(fetchLineData);
-            //既定数据格式
-            const LineColumns = [
-                {
-                    "field": "xAxis",
-                    "name": "时间",
-                    "type": "string"
-                },
-                {
-                    "field": "total",
-                    "name": "总数据量",
-                    "type": "string"
-                },
-                {
-                    "field": "unlabel",
-                    "name": "标注数据量",
-                    "type": "string"
-                },
-                
-            ];
-            if(response){
-                const data = [];
-                response.map(item => {
-                    let dataElement = {"xAxis": response.date, "total":response.total, "unlabel": response.unlabel};
-                    data.push(dataElement);
-                });
-                //将其存储至p1中
-                yield put({
-                    type: 'saveP1Data',
-                    payload: {'columns': LineColumns, 'rows': data},
-                })
-
-            }
-        },
-
-        //获取表格数据
-        *fetchP1TableData(_, { call, put }){
-            const response = yield call(fetchP1TableData);
-            if(response){
-                yield put({
-                    type: 'saveP1TableData',
-                    payload: response,
-                })
-            }
-        },
-
-        //提交表单数据
-        *addLabelData( {payload, callback}, {call}){
-            const response = yield call(addLabelData, payload);
-            if(response){
-                console.log('test response', response);
-                message.success('标注数据提交成功，感谢您的标注')
-                if(callback) callback();
-            }else{
-                message.error('标注数据添加失败,请您重试')
-            }
-        },
-
-        /* ~~~~~~~~~~~~~~~~~~~~p1~~~~~~~~~~~~~~~~~~~~~ */
-        /* ~~~~~~~~~~~~~~~~~~~~p2~~~~~~~~~~~~~~~~~~~~~ */
-        *fetchBarData(_, {call, put}){
-            const response = yield call(fetchBarData);
-            const barColumns =  [
-                {
-                    field: 'date',
-                    name: '日期',
-                },
-                {
-                    field: 'range1',
-                    name: '疑似患者',
-                },
-                {
-                    field: 'range2',
-                    name: '正常患者',
-                },
-            ];
-
-            if(response){
-                const data=[];
-                response.map(item => {
-                    let dataElement = {
-                        "date": item.date, 
-                        "range1": item.suspected,
-                        "range2": item.normal,
-                    };
-                    data.push(dataElement);
-                });
-                yield put({
-                    type:'saveP2Data',
-                    payload: {"columns": barColumns, "rows": data}, 
-                });
-
-            }
-        },
-
-        *fetchP2TableData(_, {call, put}){
-            const response = yield call(fetchP2TableData);
-            if(response){
-                yield put({
-                    type:'saveP2TableData',
-                    payload: response,
-                });
-            }
-            
-        },
-
-        //按照条件进行查询
-        *fetchP2TableDataByCondition({payload}, {call, put}){
-            const response = yield call(fetchP2TableDataByCondition, payload);
-            if(response){
-                yield put({
-                    type:'saveP2TableData',
-                    payload: response,
-                });
-            }
-        }
-        /* ~~~~~~~~~~~~~~~~~~~~p2~~~~~~~~~~~~~~~~~~~~~ */
 
     },
 
@@ -264,31 +261,46 @@ export default {
             return { ...state, ...action.payload };
         },
 
-        saveP1Data(state, action) {
-            return { ...state, 
-                p1: action.payload,
-             }
-        },
-
-        saveP1TableData(state, action){
-            return{
+      
+        saveAllInfoData(state, action) {
+            return {
                 ...state,
-                p1TableData: action.payload,
+                allInfoData: action.payload
             }
         },
 
-        saveP2Data(state, action) {
+        saveTableData(state, action) {
+            return {
+                ...state,
+                tableData: action.payload
+            }
+        },
+
+        saveBarData(state, action) {
             return { ...state, 
-                p2: action.payload,
+                barData: action.payload,
              }
         },
 
-        saveP2TableData(state, action){
-            return{
-                ...state,
-                p2TableData: action.payload,
-            }
-        },
+        // saveP1TableData(state, action){
+        //     return{
+        //         ...state,
+        //         p1TableData: action.payload,
+        //     }
+        // },
+
+        // saveP2Data(state, action) {
+        //     return { ...state, 
+        //         p2: action.payload,
+        //      }
+        // },
+
+        // saveP2TableData(state, action){
+        //     return{
+        //         ...state,
+        //         p2TableData: action.payload,
+        //     }
+        // },
     }
 
 };

@@ -1,7 +1,7 @@
 export default [
     {
         title: "诊疗记录与统计",
-        // link: "/sys/regionalAnalysis",
+        link: "/sys/regionalAnalysis",
         key: "regionalAnalysis",
         icon: "idcard"
     },
@@ -11,7 +11,7 @@ export default [
         icon: "contacts",
         children: [
             {
-                title: "采集模块简介",
+                title: "采集模块流程",
                 link: "/sys/pathAnalysis",
                 key: "pathAnalysis",
                 icon: "link"
@@ -21,12 +21,6 @@ export default [
                 link: "/sys/view/p1",
                 key: "p1",
                 icon: "line-chart"
-            },
-            {
-                title: "标注数据列表",
-                link: "/sys/view/p2",
-                key: "p2",
-                icon: "bar-chart"
             },
         ]
     },
