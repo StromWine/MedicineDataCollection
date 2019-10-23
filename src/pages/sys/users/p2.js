@@ -1,24 +1,23 @@
-import React, { PureComponent } from "react";
+import { PureComponent } from 'react';
 import { connect } from 'dva';
 import { Page } from '@components';
-import View from './components/view.js';
+import View from './components/view1.js';
 
 class Index extends PureComponent {
-
     render() {
-        const { p2, dispatch, loading } = this.props;
+        const { loading, p1, dispatch } = this.props;
         const onSubmit = (times) => {
             dispatch({
                 type: 'viewModel/getData',
                 payload: {
                     time: times,
-                    key: "p2"
+                    key: "p1"
                 }
             });
         };
         return (
-            <Page title={'标注数据列表'}>
-                <View data={p2} handleSubmit={onSubmit} loading={loading} />
+            <Page title={'数据采集'} loading={loading}>
+                <View data={p1} showY2={true} Y2SeriesIndex={[1]} Y2Name={"例"} YName={"例"} handleSubmit={onSubmit} loading={loading} />
             </Page>
         );
     }
@@ -26,7 +25,8 @@ class Index extends PureComponent {
 function mapStateToProps({ viewModel, loading }) {
     return {
         ...viewModel,
-        loading: loading.snbThree
+        loading: loading.models.snbThree,
     };
 }
+
 export default connect(mapStateToProps)(Index);

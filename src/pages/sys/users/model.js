@@ -1,7 +1,12 @@
 
-import * as api from './service';
+import {
+    sendWcstTaskData,
+    selectWcstTaskData,
+} from './service';
+import { message } from 'antd';
+
 export default {
-    namespace: 'users',
+    namespace: 'wcstModel',
     state: {
         path: undefined,
         list: [],
@@ -19,33 +24,30 @@ export default {
     },
 
     effects: {
-        *fetch({ payload: { page = 1 } }, { call, put }) {
-            const result = yield call(api.fetch, { page });
-            const { data: list, } = result;
-            yield put({
-                type: 'save',
-                payload: {
-                    list,
-                    total: 10,
-                    page: parseInt(page, 10),
-                },
-            });
+        //发送数据至后端进行添加或者更新
+        *sendWcstTaskData({ payload }, { call }){
+            console.log("*****test", payload);
+            const response = yield call(sendWcstTaskData, payload);
+            if(response.code === "true"){
+                message.success("数据更新成功！");
+            }else{
+                message.error("数据更新失败！");
+            }
         },
-        *removeuser({ payload: id }, { call, put }) {
-            yield call(api.remove, id);
-            yield put({ type: 'reload' });
-        },
-        *patch({ payload: { id, values } }, { call, put }) {
-            yield call(api.patch, id, values);
-            yield put({ type: 'reload' });
-        },
-        *create({ payload: values }, { call, put }) {
-            yield call(api.create, values);
-            yield put({ type: 'reload' });
-        },
-        *reload(action, { put, select }) {
-            const page = yield select(state => state.users.page);
-            yield put({ type: 'fetch', payload: { page } });
+
+        //从数据库获取测试任务采集信息数据
+        *selectWcstTaskData( { payload, callback }, { call }){
+            console.log("******选取数据", payload);
+            const response = yield call(selectWcstTaskData, payload);
+            if(response.code === "true"){
+                if(response.msg === "success"){
+                    if(callback) callback(response.data);
+                }else{
+                    message.info("新建用户任务采集信息")
+                }
+            }else{
+                message.error("数据库错误!")
+            }
         },
     },
 

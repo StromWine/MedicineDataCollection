@@ -36,9 +36,9 @@ const tableData = [
 ];
 
 const ADHDItem = [
-    {label: '注意缺陷型（ADHD-I）', value: 1},
-    {label: '多动冲动型（ADHD-HI）', value: 2},
-    {label: '混合型（ADHD-C）', value: 3},
+    {label: '短期性失眠', value: 1},
+    {label: '慢性失眠', value: 2},
+    {label: '混合型', value: 3},
     {label: '正常', value: 0}
   ];
 

@@ -11,23 +11,23 @@ export default [
         icon: "contacts",
         children: [
             {
-                title: "采集模块简介",
+                title: "采集模块流程",
                 link: "/sys/pathAnalysis",
                 key: "pathAnalysis",
                 icon: "link"
             },
             {
-                title: "数据采集",
+                title: "ADHD数据采集",
                 link: "/sys/view/p1",
                 key: "p1",
                 icon: "line-chart"
             },
             {
-                title: "标注数据列表",
-                link: "/sys/view/p2",
+                title: "失眠症数据采集",
+                link: "/sys/users/p2",
                 key: "p2",
-                icon: "bar-chart"
-            },
+                icon: "line-chart"
+            }
         ]
     },
     {
