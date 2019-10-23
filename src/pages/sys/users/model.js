@@ -2,6 +2,7 @@
 import {
     sendWcstTaskData,
     selectWcstTaskData,
+    fetchInfoWithWcstById,
 } from './service';
 import { message } from 'antd';
 
@@ -47,6 +48,15 @@ export default {
                 }
             }else{
                 message.error("数据库错误!")
+            }
+        },
+
+        *fetchInfoWithWcstById( { payload, callback}, { call}){
+            const response = yield call(fetchInfoWithWcstById, payload);
+            if(response.code === "true"){
+                if(callback) callback(response.data);
+            }else{
+                message.error("数据库错误!");
             }
         },
     },

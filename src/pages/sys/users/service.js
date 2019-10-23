@@ -35,5 +35,5 @@ export function sendWcstTaskData(params){
 }
 
 export function fetchInfoWithWcstById(params){
-    return request(`api/nir/fetchAllInfoById?id=${params}`);
+    return request(`api/nir/fetchWcstInfoById?id=${params}`);
 }

@@ -69,7 +69,7 @@ class DescriptionForm extends PureComponent {
         const { formData } = this.state;
         if(edit){
             dispatch({
-                type: 'viewModel/fetchAllInfoDataById',
+                type: 'wcstModel/fetchInfoWithWcstById',
                 payload: currentRecordId,
                 callback: res => {
                   console.log("***************", res);
@@ -80,7 +80,7 @@ class DescriptionForm extends PureComponent {
                                 ...res.personalInfo,
                             },
                             missionFormData:{
-                                ...res.missionTest,
+                                ...res.wcstTaskInfo,
                             },
                             clinicalInfo:{
                                 ...res.clinicalInfo,
@@ -114,24 +114,24 @@ class DescriptionForm extends PureComponent {
               </Descriptions>
               <Divider />
               <Descriptions title="任务测试得分">
-                <Descriptions.Item label="总应答数">{missionFormData.TA}</Descriptions.Item>
-                <Descriptions.Item label="正确应答数">{missionFormData.CR}</Descriptions.Item>
-                <Descriptions.Item label="正确应答百分比">{missionFormData.PCR}</Descriptions.Item>
-                <Descriptions.Item label="错误应答数">{missionFormData.TE}</Descriptions.Item>
-                <Descriptions.Item label="错误应答数百分比">{missionFormData.PE}</Descriptions.Item>
-                <Descriptions.Item label="持续性应答数">{missionFormData.PR}</Descriptions.Item>
-                <Descriptions.Item label="持续性应答数百分比">{missionFormData.PPR}</Descriptions.Item>
-                <Descriptions.Item label="持续性错误数">{missionFormData.PE}</Descriptions.Item>
-                <Descriptions.Item label="持续性错误的百分数">{missionFormData.PPE}</Descriptions.Item>
-                <Descriptions.Item label="非持续性错误">{missionFormData.NPE}</Descriptions.Item>
-                <Descriptions.Item label="非持续性错误百分比">{missionFormData.PNPE}</Descriptions.Item>
-                <Descriptions.Item label="概念化水平应答数">{missionFormData.CLR}</Descriptions.Item>
-                <Descriptions.Item label="概念化水平百分数">{missionFormData.PCLR}</Descriptions.Item>
-                <Descriptions.Item label="完成分类数">{missionFormData.CC}</Descriptions.Item>
-                <Descriptions.Item label="完成第一个分类所需应答数">{missionFormData.TCFC}</Descriptions.Item>
-                <Descriptions.Item label="不能维持完整分类">{missionFormData.FM}</Descriptions.Item>
-                <Descriptions.Item label="学习到学会">{missionFormData.L_L}</Descriptions.Item>
-                <Descriptions.Item label="用时">{missionFormData.Time}</Descriptions.Item>
+                <Descriptions.Item label="总应答数">{missionFormData.ta}</Descriptions.Item>
+                <Descriptions.Item label="正确应答数">{missionFormData.cr}</Descriptions.Item>
+                <Descriptions.Item label="正确应答百分比">{missionFormData.pcr}</Descriptions.Item>
+                <Descriptions.Item label="错误应答数">{missionFormData.te}</Descriptions.Item>
+                <Descriptions.Item label="错误应答数百分比">{missionFormData.pe}</Descriptions.Item>
+                <Descriptions.Item label="持续性应答数">{missionFormData.pr}</Descriptions.Item>
+                <Descriptions.Item label="持续性应答数百分比">{missionFormData.ppr}</Descriptions.Item>
+                <Descriptions.Item label="持续性错误数">{missionFormData.pse}</Descriptions.Item>
+                <Descriptions.Item label="持续性错误的百分数">{missionFormData.ppe}</Descriptions.Item>
+                <Descriptions.Item label="非持续性错误">{missionFormData.npe}</Descriptions.Item>
+                <Descriptions.Item label="非持续性错误百分比">{missionFormData.pnpe}</Descriptions.Item>
+                <Descriptions.Item label="概念化水平应答数">{missionFormData.clr}</Descriptions.Item>
+                <Descriptions.Item label="概念化水平百分数">{missionFormData.pclr}</Descriptions.Item>
+                <Descriptions.Item label="完成分类数">{missionFormData.cc}</Descriptions.Item>
+                <Descriptions.Item label="完成第一个分类所需应答数">{missionFormData.tcfc}</Descriptions.Item>
+                <Descriptions.Item label="不能维持完整分类">{missionFormData.fm}</Descriptions.Item>
+                <Descriptions.Item label="学习到学会">{missionFormData.l2l}</Descriptions.Item>
+                <Descriptions.Item label="用时">{missionFormData.time}</Descriptions.Item>
               </Descriptions>
               <Divider />
               <Descriptions title="临床信息">
