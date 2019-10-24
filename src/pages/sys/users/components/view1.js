@@ -44,9 +44,9 @@ const ADHDItem = [
 
 const gender = [{label:0, value: '女'}, {label:1, value: '男'}];
 
-@connect(({viewModel, loading}) => ({
-    viewModel,
-    loading: loading.models.viewModel,
+@connect(({wcstModel, loading}) => ({
+    wcstModel,
+    loading: loading.models.wcstModel,
 }))
 @Form.create()
 class Index extends PureComponent {
@@ -330,7 +330,7 @@ class Index extends PureComponent {
     
     render() {
         const { 
-            viewModel: { tableData, barData }, 
+            wcstModel: { tableData, barData }, 
             loading,
         } = this.props;
 
