@@ -73,7 +73,7 @@ export default {
   theme,
   proxy: {
     "/api": {
-      target: "http://10.115.121.190:8080",
+      target: "http://10.13.81.186:8080",
       changeOrigin: true,
       pathRewrite: { "^/api": "" }
     }

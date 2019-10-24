@@ -87,11 +87,11 @@ class Index extends PureComponent {
         // });
         //获取表格数据
         dispatch({
-            type: 'viewModel/fetchAllAndTableData',
+            type: 'wcstModel/fetchAllAndTableData',
         });
         //获取柱状图数据
         dispatch({
-            type:'viewModel/fetchBarData'
+            type: 'wcstModel/fetchBarData'
         });
 
     }
@@ -106,7 +106,7 @@ class Index extends PureComponent {
                 console.log(values.date)
                 const { date } = this.state;
                 dispatch({
-                    type:'viewModel/fetchP2TableDataByCondition',
+                    type:'wcstModel/fetchP2TableDataByCondition',
                     payload: {date: date, patientName: values.patientName, doctorName: values.doctorName},
                 });
             }

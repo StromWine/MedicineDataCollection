@@ -8,7 +8,7 @@ class Index extends PureComponent {
         const { loading, p1, dispatch } = this.props;
         const onSubmit = (times) => {
             dispatch({
-                type: 'viewModel/getData',
+                type: 'wcstModel/getData',
                 payload: {
                     time: times,
                     key: "p1"

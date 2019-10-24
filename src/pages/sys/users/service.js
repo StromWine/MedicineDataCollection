@@ -37,3 +37,21 @@ export function sendWcstTaskData(params){
 export function fetchInfoWithWcstById(params){
     return request(`api/nir/fetchWcstInfoById?id=${params}`);
 }
+
+export function fetchBarData(){
+  //GET请求形式，数据格式为columns既定格式
+  return request(`/api/nir/type/daily/count`);
+}
+
+//返回所有的数据
+export function fetchTableData(){
+  return request(`/api/nir/total`);
+}
+
+export function fetchP2TableDataByCondition(params){
+  //POST请求形式，发送标注的表单数据至后端
+  return request(`/users/...`, {
+      method: 'POST',
+      body: JSON.stringify({params}),
+  });
+}
