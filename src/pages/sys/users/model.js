@@ -240,6 +240,12 @@ export default {
                 tableData: action.payload
             }
         },
+
+        saveBarData(state, action) {
+            return { ...state, 
+                barData: action.payload,
+             }
+        },
     },
 
 };
