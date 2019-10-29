@@ -32,7 +32,7 @@ export default [
     },
     {
         title: "智能辅助诊断",
-        // link: "/sys/users",
+        link: "/sys/users/p3",
         key: "users",
         icon: "user"
     },

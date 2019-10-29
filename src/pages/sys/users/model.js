@@ -162,15 +162,15 @@ export default {
                 },
                 {
                     field: 'range1',
-                    name: 'adI',
+                    name: '短期性失眠',
                 },
                 {
                     field: 'range2',
-                    name: 'adHI',
+                    name: '慢性失眠',
                 },
                 {
                     field: 'range3',
-                    name: 'adC',
+                    name: '其他类型',
                 },
                 {
                     field: 'range4',
