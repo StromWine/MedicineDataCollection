@@ -55,3 +55,55 @@ export function fetchP2TableDataByCondition(params){
       body: JSON.stringify({params}),
   });
 }
+//根据id获取数据库信息
+export function selectUserById(params){
+  return request(`/api/nir/selectUser?id=${params}`);
+}
+
+//添加用户个人信息的表单
+export function addFirstStepData(params){
+  //POST请求形式，发送标注的表单数据至后端
+  const json = JSON.stringify(params);
+  return request(`/api/nir/user`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      body: json,
+  });
+}
+//更新用户个人信息的表单
+export function updateFirstStepData(params){
+  //POST请求形式，发送标注的表单数据至后端
+  const json = JSON.stringify(params);
+  return request(`/api/nir/user/update`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      body: json,
+  });
+}
+
+//更新任务得分信息的表单
+export function updateSecondStepData(params){
+  //POST请求形式，发送标注的表单数据至后端
+  return request(`/api/nir/task/update`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      data: JSON.stringify(params),
+  });
+}
+//更新临床信息的表单
+export function updateThirdStepData(params){
+  //POST请求形式，发送标注的表单数据至后端
+  return request(`/api/nir/clinical/update`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      data: JSON.stringify(params),
+  });
+}

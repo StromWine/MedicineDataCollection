@@ -6,6 +6,11 @@ import {
     fetchBarData,
     fetchTableData,
     fetchP2TableDataByCondition,
+    selectUserById,
+    addFirstStepData,
+    updateFirstStepData,
+    updateSecondStepData,
+    updateThirdStepData,
 } from './service';
 import { message } from 'antd';
 
@@ -218,6 +223,65 @@ export default {
                 type: 'saveP1Data',
                 payload: data,
             });
+        },
+        //根据id获取个人采集信息
+        *selectUserById({ payload, callback }, { call }){
+            const response = yield call(selectUserById, payload);
+            if(response.code === "true"){
+                if(callback) callback(response.data);
+            }else{
+                message.error('获取当前信息失败！')
+            }
+        },
+        //单独添加个人数据至后端数据库
+        *addPersonalInfo( { payload }, { call }){
+            const response = yield call(addFirstStepData, payload);
+            if(response.code === "true"){
+                message.info("新建个人采集信息成功！");
+            }else{
+                message.error("新建个人采集信息失败！");
+            }
+        },
+        //单独更新个人采集信息
+        *updatePersonalInfo({ payload }, { call } ){
+            const response = yield call(updateFirstStepData, payload);
+            if(response.code === "true"){
+                message.info("个人采集信息更新成功");
+            }else{
+                message.error('个人采集信息更新失败，请您重试');
+            }
+        },
+        *updateLabelData({payload}, {call, put}){
+            console.log('test payload', payload)
+            const personalInfo = payload.formData.personInfo;
+            const missionInfo = payload.formData.missionFormData;
+            const clinicalInfo = payload.formData.clinicalInfo;
+            const userId = payload.userId;
+
+            console.log('test addLabelData', personalInfo);
+            //发送个人信息表单
+            const personParam = {params: personalInfo, userId: userId};
+            const personResponse = yield call(updateFirstStepData, personParam);
+            if(personResponse.code === "true"){
+                message.info("个人信息更新标注成功");
+            }else{
+                message.error('个人信息更新标注失败,请您重试')
+            }
+            //发送任务更新信息
+            const missionParam = {params: missionInfo, userId: userId};
+            const missionResponse = yield call(updateSecondStepData, missionParam);
+            if(missionResponse.code==="true"){
+                message.info("任务信息更新标注成功");
+            }else{
+                message.error('任务信息更新标注失败,请您重试')
+            }
+            const clinicalParam = {params: clinicalInfo, userId: userId};
+            const clinicalRes = yield call(updateThirdStepData, clinicalParam);
+            if(clinicalRes.code==="true"){
+                message.info("临床信息更新标注成功");
+            }else{
+                message.error('临床信息更新标注失败,请您重试')
+            }
         },
         
     },

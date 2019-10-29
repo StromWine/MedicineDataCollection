@@ -18,8 +18,8 @@ const ADHDItem = [
   ];
 
 //个人信息添加的表单
-@connect(({viewModel}) => ({
-viewModel,
+@connect(({wcstModel}) => ({
+wcstModel,
 }))
 @Form.create()
 class PersonnalForm extends PureComponent {
@@ -42,7 +42,7 @@ class PersonnalForm extends PureComponent {
         //根据后台获取相应的结果
         if(edit){
             dispatch({
-                type: 'viewModel/selectUserById',
+                type: 'wcstModel/selectUserById',
                 payload: currentRecordId,
                 callback: res => {
                     this.setState({
@@ -70,12 +70,12 @@ class PersonnalForm extends PureComponent {
               const { handleModalVisible, edit, currentRecordId } = this.props;
               if(!edit){
                 dispatch({
-                    type: 'viewModel/addPersonalInfo',
+                    type: 'wcstModel/addPersonalInfo',
                     payload: values, 
                 });
               }else{
                 dispatch({
-                    type: 'viewModel/updatePersonalInfo',
+                    type: 'wcstModel/updatePersonalInfo',
                     payload: {params:values, userId: currentRecordId},
                 });
               }

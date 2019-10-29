@@ -33,8 +33,8 @@ const ADHDItem = [
   {label: '正常', value: 0}
 ];
 
-@connect(({viewModel}) => ({
-  viewModel,
+@connect(({wcstModel}) => ({
+  wcstModel,
 }))
 @Form.create()
 class LabelForm extends PureComponent {
@@ -85,7 +85,7 @@ class LabelForm extends PureComponent {
   };
 
   componentDidMount(){
-    const {viewModel: {allInfoData}, currentRecordId, edit} = this.props;
+    const {wcstModel: {allInfoData}, currentRecordId, edit} = this.props;
     const { formData } = this.state;
     if(edit){
       // 如果是编辑进来的，则进行赋值
@@ -174,29 +174,29 @@ class LabelForm extends PureComponent {
     if (!edit){
       console.log("++++++++++++开始请求后端数据+++++++++++++++")
       dispatch({
-        type: 'viewModel/addLabelData',
+        type: 'wcstModel/addLabelData',
         payload: formData,
         callback: res => {
           //返回之后重新获取一下页面数据
           dispatch({
-            type: 'viewModel/fetchLineData',
+            type: 'wcstModel/fetchLineData',
           });
           dispatch({
-            type: 'viewModel/fetchAllAndTableData',
+            type: 'wcstModel/fetchAllAndTableData',
           });
         }
       });
     }else{
       dispatch({
-        type: 'viewModel/updateLabelData',
+        type: 'wcstModel/updateLabelData',
         payload: {formData: formData, userId: currentRecordId},
         callback: res => {
           //返回之后重新获取一下页面数据
           dispatch({
-            type: 'viewModel/fetchLineData',
+            type: 'wcstModel/fetchLineData',
           });
           dispatch({
-            type: 'viewModel/fetchAllAndTableData',
+            type: 'wcstModel/fetchAllAndTableData',
           });
         }
       });
