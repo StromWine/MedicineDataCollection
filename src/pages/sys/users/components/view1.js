@@ -15,6 +15,7 @@ import {
     Tag, 
     Divider, 
     Tooltip,
+    Select
 } from 'antd';
 import moment from 'moment';
 import PersonnalForm from './PersonnalForm';
@@ -24,6 +25,7 @@ import DescriptionForm from './DescriptionForm';
 import DataPathForm from './DataPathForm';
 
 const { TabPane } = Tabs;
+const {Option} = Select;
 const dateFormat = 'YYYY/MM/DD';
 const initTime = [moment().subtract(7, 'days'), moment().subtract(1, 'days')];
 
@@ -35,11 +37,12 @@ const tableData = [
     {dataPath: "/home/data/uitwoev", testDate: "7/27"},
 ];
 
-const ADHDItem = [
-    {label: '短期性失眠', value: 1},
-    {label: '慢性失眠', value: 2},
-    {label: '混合型', value: 3},
-    {label: '正常', value: 0}
+const wcstItem = [
+    {label: '单纯性失眠', value: 1},
+    {label: '伴过度觉醒', value: 2},
+    {label: '伴焦虑', value: 3},
+    {label: '伴抑郁', value: 4},
+    {label: '正常', value: 0},
   ];
 
 const gender = [{label:0, value: '女'}, {label:1, value: '男'}];
@@ -128,23 +131,67 @@ class Index extends PureComponent {
         const {getFieldDecorator} = form;
         return(
             <Form layout="inline" onSubmit={this.handleSearchSubmit}>
-                <Form.Item >
-                {getFieldDecorator('patientName', {}
-                )(
-                    <Input
-                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder="患者姓名"
-                    />,
-                )}
-                </Form.Item>
-                <Form.Item >
-                {getFieldDecorator('doctorName', {})(
-                    <Input
-                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder="医生姓名"
-                    />,
-                )}
-                </Form.Item>
+            <Form.Item >
+            {getFieldDecorator('patientID', {})(
+                 <Input
+                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                 placeholder="患者编号"
+                 />,
+            )}
+            </Form.Item>
+            <Form.Item >
+            {getFieldDecorator('patientName', {}
+            )(
+                <Input
+                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                placeholder="患者姓名"
+                />,
+            )}
+            </Form.Item>
+            
+            <Form.Item >
+            {getFieldDecorator('doctorName', {})(
+                 <Select
+                 showSearch
+                 style={{ width: 200 }}
+                 placeholder="选择医生"
+                 // onChange={onChange}
+                 // onFocus={onFocus}
+                 // onBlur={onBlur}
+                 // onSearch={onSearch}
+                 filterOption={(input, option) =>
+                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+             }
+             >
+             <Option value="doctor1">医生1</Option>
+             <Option value="doctor2">医生2</Option>
+             <Option value="doctor3">医生3</Option>
+             <Option value="doctor4">医生4</Option>
+         </Select>,
+            )}
+            </Form.Item>
+            <Form.Item >
+            {getFieldDecorator('wcstType', {})(
+                <Select
+                showSearch
+                style={{ width: 200 }}
+                placeholder="选择失眠类型"
+                // onChange={onChange}
+                // onFocus={onFocus}
+                // onBlur={onBlur}
+                // onSearch={onSearch}
+                filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            >
+            <Option value="type1">单纯性失眠</Option>
+            <Option value="type2">伴过度觉醒</Option>
+            <Option value="type3">伴焦虑</Option>
+            <Option value="type4">伴抑郁</Option>
+            <Option value="type5">正常</Option>
+        </Select>,
+            )}
+            </Form.Item>
                 <Form.Item >
                 {getFieldDecorator('date', {})(
                     <DatePicker onChange={(date, dateString) => this.handleDateSearch(date, dateString)} />
@@ -277,14 +324,34 @@ class Index extends PureComponent {
           },
           {
             title: '患病类型',
-            dataIndex: 'adhdType',
-            width: '20%',
+            dataIndex: 'wcstType',
+            width: '10%',
             render:text => {
-                const item = ADHDItem.find(v => v.value === text)
+                const item = wcstItem.find(v => v.value === text)
+                if (!item){
+                    return  <Tag color="#2db7f5">{"未诊断"}</Tag>
+                }
+                else{
                 return(
                     <Tag color="#2db7f5">{item.label}</Tag>
-                );
+                  );
+                }
             }
+          },
+          {
+            title: '主治医生',
+            dataIndex: 'doctorId',
+            width: '10%',
+          },
+          {
+            title: '测试时间',
+            dataIndex: 'testTime',
+            width: '10%',
+          },
+          {
+            title: '任务类型',
+            dataIndex: 'testType',
+            width: '10%',
           },
           {
               title: '采集信息汇总展示',

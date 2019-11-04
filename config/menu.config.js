@@ -17,6 +17,12 @@ export default [
                 icon: "link"
             },
             {
+                title: "患者信息管理",
+                link: "/sys/users/users",
+                key: "users",
+                icon: "user"
+            },
+            {
                 title: "ADHD数据采集",
                 link: "/sys/view/p1",
                 key: "p1",
@@ -33,6 +39,12 @@ export default [
     {
         title: "智能辅助诊断",
         link: "/sys/users/p3",
+        key: "users",
+        icon: "user"
+    },
+    {
+        title: "相似病历检索",
+        link: "/sys/users/p4",
         key: "users",
         icon: "user"
     },

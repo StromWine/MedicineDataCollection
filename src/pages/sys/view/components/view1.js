@@ -281,9 +281,14 @@ class Index extends PureComponent {
             width: '20%',
             render:text => {
                 const item = ADHDItem.find(v => v.value === text)
+                if (!item){
+                    return(<Tag color="#2db7f5">{"未诊断"}</Tag>)
+                }
+                else{
                 return(
                     <Tag color="#2db7f5">{item.label}</Tag>
                 );
+                }
             }
           },
           {

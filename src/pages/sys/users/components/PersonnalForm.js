@@ -1,20 +1,25 @@
 import React, {PureComponent} from 'react';
 import dva, { connect } from 'dva';
+import moment from 'moment';
 import {
   Form,
   Input,
   Select,
   Button,
   Modal,
+  DatePicker, 
+  TimePicker
 } from 'antd';
 
 const {Option} = Select;
-
+const dateFormat = 'YYYY/MM/DD';
+const format = 'HH:mm';
 const ADHDItem = [
-    {label: '短期型失眠', value: 1},
-    {label: '慢性失眠症', value: 2},
-    {label: '混合型', value: 3},
-    {label: '正常', value: 0}
+    {label: '单纯性失眠', value: 1},
+    {label: '伴过度觉醒', value: 2},
+    {label: '伴焦虑', value: 3},
+    {label: '伴抑郁', value: 4},
+    {label: '正常', value: 0},
   ];
 
 //个人信息添加的表单
@@ -32,6 +37,7 @@ class PersonnalForm extends PureComponent {
             height: '',
             name:'',
             adhdType: undefined , 
+            doctorId: '',
         }
     }
 
@@ -159,6 +165,60 @@ class PersonnalForm extends PureComponent {
                 ))}
             </Select>)}
             </Form.Item>
+            <Form.Item label="主治医生">
+            {getFieldDecorator('doctorId', {
+                initialValue:personInfo.doctorId,
+            })(<Input/>)}
+            </Form.Item>
+            
+            {/* <Form.Item label="患者测试时间">
+            <div style={{display:'flex',justifyContent:'space-around'}}>
+            <DatePicker defaultValue={moment('2019/11/01', dateFormat)} format={dateFormat} />
+            <TimePicker defaultValue={moment('12:08', format)} format={format} />
+            </div>
+             </Form.Item>
+             <Form.Item label="患者药物干预">
+                    <Select
+                        showSearch
+                        style={{ width: 200 }}
+                        placeholder="选择药物"
+                        // onChange={onChange}
+                        // onFocus={onFocus}
+                        // onBlur={onBlur}
+                        // onSearch={onSearch}
+                        filterOption={(input, option) =>
+                                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    >
+                    <Option value="medicine1">药物1</Option>
+                    <Option value="medicine2">药物2</Option>
+                    <Option value="medicine3">药物3</Option>
+                    <Option value="No">无</Option>
+                </Select>,
+             </Form.Item>
+             <Form.Item label="服药后多久时间">
+            <TimePicker defaultValue={moment('1', "hh")} format={"hh"} style={{ width: 100} }/> h
+             </Form.Item>
+
+             <Form.Item label="患者心理干预">
+                    <Select
+                        showSearch
+                        style={{ width: 200 }}
+                        placeholder="选择心理干预手段"
+                        // onChange={onChange}
+                        // onFocus={onFocus}
+                        // onBlur={onBlur}
+                        // onSearch={onSearch}
+                        filterOption={(input, option) =>
+                                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    >
+                    <Option value="physical1">干预1</Option>
+                    <Option value="physical2">干预2</Option>
+                    <Option value="physical3">干预3</Option>
+                    <Option value="No">无</Option>
+                </Select>,
+             </Form.Item> */}
             <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
                     添加/更新采集个人信息

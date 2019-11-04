@@ -1,5 +1,7 @@
 import { Fragment, PureComponent } from 'react';
 import { connect } from 'dva';
+import { Line, Bar } from '@components/Echarts';
+import { BrowserRouter as Router,Route} from 'react-router-dom';
 import { 
     Row, 
     Col, 
@@ -14,12 +16,16 @@ import {
     Tag, 
     Divider, 
     Tooltip,
+    Select,
 } from 'antd';
 import moment from 'moment';
 import PersonnalForm from './PersonnalForm';
-import AnalysisForm from './AnalysisForm';
+import MissionForm from './MissionForm';
+import ClinicalForm from './ClinicalForm';
+import PatientsDescriptionForm from './patientsDescription'
+import DataPathForm from './DataPathForm';
 
-
+const {Option} = Select;
 const { TabPane } = Tabs;
 const dateFormat = 'YYYY/MM/DD';
 const initTime = [moment().subtract(7, 'days'), moment().subtract(1, 'days')];
@@ -33,10 +39,11 @@ const tableData = [
 ];
 
 const wcstItem = [
-    {label: '短期性失眠', value: 1},
-    {label: '慢性失眠', value: 2},
-    {label: '混合型', value: 3},
-    {label: '正常', value: 0}
+    {label: '单纯性失眠', value: 1},
+    {label: '伴过度觉醒', value: 2},
+    {label: '伴焦虑', value: 3},
+    {label: '伴抑郁', value: 4},
+    {label: '正常', value: 0},
   ];
 
 const gender = [{label:0, value: '女'}, {label:1, value: '男'}];
@@ -52,7 +59,10 @@ class Index extends PureComponent {
         this.state = {
             date: initTime,
             modalVisible1: false, // 个人采集信息表单的视觉信息
-            modalVisible2: false, // 智能辅助诊断表单
+            modalVisible2: false, // 任务采集信息表单
+            modalVisible3: false, // 临床信息采集表单
+            modalVisible4: false, // 采集信息总体描述
+            modalVisible5: false, // 采集数据存储关联
             edit: false,
             currentRecordId: -1,
             currentUserName: 'undefined',
@@ -123,6 +133,14 @@ class Index extends PureComponent {
         return(
             <Form layout="inline" onSubmit={this.handleSearchSubmit}>
                 <Form.Item >
+                {getFieldDecorator('patientID', {})(
+                     <Input
+                     prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                     placeholder="患者编号"
+                     />,
+                )}
+                </Form.Item>
+                <Form.Item >
                 {getFieldDecorator('patientName', {}
                 )(
                     <Input
@@ -131,25 +149,63 @@ class Index extends PureComponent {
                     />,
                 )}
                 </Form.Item>
+                
                 <Form.Item >
                 {getFieldDecorator('doctorName', {})(
-                    <Input
-                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    placeholder="医生姓名"
-                    />,
+                     <Select
+                     showSearch
+                     style={{ width: 200 }}
+                     placeholder="选择医生"
+                     // onChange={onChange}
+                     // onFocus={onFocus}
+                     // onBlur={onBlur}
+                     // onSearch={onSearch}
+                     filterOption={(input, option) =>
+                             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                 }
+                 >
+                 <Option value="doctor1">医生1</Option>
+                 <Option value="doctor2">医生2</Option>
+                 <Option value="doctor3">医生3</Option>
+                 <Option value="doctor4">医生4</Option>
+             </Select>,
                 )}
                 </Form.Item>
                 <Form.Item >
+                {getFieldDecorator('wcstType', {})(
+                    <Select
+                    showSearch
+                    style={{ width: 200 }}
+                    placeholder="选择失眠类型"
+                    // onChange={onChange}
+                    // onFocus={onFocus}
+                    // onBlur={onBlur}
+                    // onSearch={onSearch}
+                    filterOption={(input, option) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                >
+                <Option value="type1">类型1</Option>
+                <Option value="type2">类型2</Option>
+                <Option value="type3">类型3</Option>
+                <Option value="type4">类型4</Option>
+            </Select>,
+                )}
+                </Form.Item>
+                {/* <Form.Item >
                 {getFieldDecorator('date', {})(
                     <DatePicker onChange={(date, dateString) => this.handleDateSearch(date, dateString)} />
                 )}
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item>
                 <Button type="primary" htmlType="submit">
                     查询
                 </Button>
                 <Button onClick={this.handleReset}>
                     重置
+                </Button>
+                <Button type="primary" onClick={() => this.handleModalVisible(true, 'personalInfo')}>
+                    新建患者个人信息
                 </Button>
                 </Form.Item>
             </Form>
@@ -170,6 +226,24 @@ class Index extends PureComponent {
                 modalVisible2: !!flag,
             });
         }
+        if(msg === 'clinicalInfo') {
+            this.setState({
+                edit: false,
+                modalVisible3: !!flag,
+            });
+        }
+        if(msg === 'patientsDescription') {
+            this.setState({
+                edit: false,
+                modalVisible4: !!flag,
+            });
+        }
+        if(msg === 'dataPath') {
+            this.setState({
+                edit: false,
+                modalVisible5: !!flag,
+            });
+        }
     }
 
     //表格上点击操作编辑按钮是直接将id数据传送
@@ -182,10 +256,34 @@ class Index extends PureComponent {
                 currentUserName: record.name,
             });
         }
-        if(msg === "analysisInfo") {
+        if(msg === "missionInfo") {
             this.setState({
                 edit: true,
                 modalVisible2:!!flag,
+                currentUserName: record.name,
+                currentRecordId: record.id,
+            });
+        }
+        if(msg === "clinicalInfo") {
+            this.setState({
+                edit: true,
+                modalVisible3:!!flag,
+                currentUserName: record.name,
+                currentRecordId: record.id,
+            });
+        }
+        if(msg === "patientsDescription") {
+            this.setState({
+                edit: true,
+                modalVisible4:!!flag,
+                currentUserName: record.name,
+                currentRecordId: record.id,
+            });
+        }
+        if(msg === "dataPath") {
+            this.setState({
+                edit: true,
+                modalVisible5:!!flag,
                 currentUserName: record.name,
                 currentRecordId: record.id,
             });
@@ -230,7 +328,7 @@ class Index extends PureComponent {
           {
             title: '患病类型',
             dataIndex: 'wcstType',
-            width: '20%',
+            width: '10%',
             render:text => {
                 const item = wcstItem.find(v => v.value === text)
                 if (!item){
@@ -244,14 +342,20 @@ class Index extends PureComponent {
             }
           },
           {
-              title: '采集信息汇总展示',
-              width: '10%',
+            title: '主治医生',
+            dataIndex: 'doctor',
+            width: '10%',
+          },
+         
+          {
+              title: '患者信息展示',
+              width: '7%',
               render:(text, record) => {
                   return(
                     <Fragment>
                         <Row type="flex" justify="center">
-                            <Tooltip title="采集信息展示">
-                                <Icon type="edit" onClick={ ()=> this.handleClick(true, record, 'description')} />
+                            <Tooltip title="患者信息展示">
+                                <Icon type="book" onClick={()=> this.handleClick(true, record, 'patientsDescription')} />
                             </Tooltip>
                         </Row>
                     </Fragment>
@@ -259,15 +363,33 @@ class Index extends PureComponent {
               }
           },
           {
-              title: '智能辅助诊断',
-              width: '30%',
+              title: '添加/修改患者信息',
+              width: '40%',
               render: (text, record) => {
                   return(
                     <Fragment>
-                        <Tooltip title="个人采集信息">
-                        <Col span={5} style={{ textAlign: 'center' }}>
-                        <Button type="primary" onClick={() => this.handleClick(true, record,'analysisInfo')}>智能诊断结果</Button>
-                       </Col>
+                        <Tooltip title="个人采集信息" >
+                            <Icon type="edit" style={{justifyContent:'center'}}  onClick={ () =>this.handleClick(true, record, 'personalInfo')}/>
+                        </Tooltip>
+                        <Divider type='vertical' />
+                        {/* <Tooltip title="数据存储关联">
+                            <Icon type="dropbox" onClick={ () =>this.handleClick(true, record, 'dataPath')}/>
+                        </Tooltip>
+                        <Divider type='vertical' />
+                        <Tooltip title="任务测试信息">
+                            <Icon type="apple" onClick={ () =>this.handleClick(true, record, 'missionInfo')}/>
+                        </Tooltip>
+                        <Divider type='vertical' /> */}
+                        <Tooltip title="临床信息采集">
+                            <Icon type="codepen-circle" style={{justifyContent:'center'}} onClick={ () =>this.handleClick(true, record, 'clinicalInfo')}/>
+                        </Tooltip>
+                        <Divider type='vertical' />
+                        <Tooltip title="查看量表信息">
+                            <Icon type="copy" style={{justifyContent:'center'}} onClick={ () =>this.handleClick(true, record, 'clinicalInfo')}/>
+                        </Tooltip>
+                        <Divider type='vertical' />
+                        <Tooltip title="新建近红外采集信息" >
+                            <Icon type="arrow-right" style={{justifyContent:'center'}}  onClick={ () =>this.handleClick(true, record, 'personalInfo')}/>
                         </Tooltip>
                     </Fragment>
                   );
@@ -285,6 +407,9 @@ class Index extends PureComponent {
         const { 
             modalVisible1, 
             modalVisible2,
+            modalVisible3,
+            modalVisible4,
+            modalVisible5,
             currentRecordId, 
             edit, 
             currentUserName,
@@ -302,6 +427,23 @@ class Index extends PureComponent {
                 {/**
                  修改添加策略
                  */}
+                 
+                {/* <Card
+                    // title="Card title"
+                    style={{ marginTop: 15 }}
+                >
+                    <Tabs
+                        animated={false}
+                        style={{ textAlign: 'right' }}
+                    >
+                        <TabPane tab={<Icon type="bar-chart" />} key="1" style={{ textAlign: 'left' }}>
+                            <Bar seriesLayoutBy={"column"} data={barData} loading={loading} />
+                        </TabPane>
+                        <TabPane tab={<Icon type="pie-chart" />} key="2" style={{ textAlign: 'left' }}>
+                            <Line seriesLayoutBy={"column"} data={barData} loading={loading} />
+                        </TabPane>
+                    </Tabs>
+                </Card> */}
                 <Table
                     columns={this.columns}
                     dataSource={tableData}
@@ -320,9 +462,29 @@ class Index extends PureComponent {
                     currentRecordId={currentRecordId}
                     userName={currentUserName}
                 />)}
-
-                {modalVisible2 && (<AnalysisForm
+                {modalVisible2 && (<MissionForm
                     modalVisible={modalVisible2}
+                    handleModalVisible={handleModalVisible}
+                    edit={edit}
+                    currentRecordId={currentRecordId}
+                    userName={currentUserName}
+                />)}
+                {modalVisible3 && (<ClinicalForm
+                    modalVisible={modalVisible3}
+                    handleModalVisible={handleModalVisible}
+                    edit={edit}
+                    currentRecordId={currentRecordId}
+                    userName={currentUserName}
+                />)}
+                {modalVisible4 && (<PatientsDescriptionForm
+                    modalVisible={modalVisible4}
+                    handleModalVisible={handleModalVisible}
+                    edit={edit}
+                    currentRecordId={currentRecordId}
+                    userName={currentUserName}
+                />)}
+                {modalVisible5 && (<DataPathForm
+                    modalVisible={modalVisible5}
                     handleModalVisible={handleModalVisible}
                     edit={edit}
                     currentRecordId={currentRecordId}

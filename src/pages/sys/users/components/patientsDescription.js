@@ -21,7 +21,7 @@ const gender = [{label:0, value: '女'}, {label:1, value: '男'}];
     viewModel,
     }))
 @Form.create()
-class DescriptionForm extends PureComponent {
+class PatientsDescriptionForm extends PureComponent {
     state = {
         formData: {
           personInfo:{
@@ -31,30 +31,6 @@ class DescriptionForm extends PureComponent {
             height: undefined,
             name:undefined,
             wcstType: undefined , 
-            medicine: undefined,
-            medicineTime : undefined,
-            physical: undefined,
-            testTime: undefined,
-          },
-          missionFormData:{
-            ta: undefined,
-            cr: undefined,
-            pcr: undefined,
-            te: undefined,
-            pe: undefined,
-            pr: undefined,
-            ppr: undefined,
-            pse: undefined,
-            ppe: undefined,
-            npe: undefined,
-            pnpe: undefined,
-            clr: undefined,
-            pclr: undefined,
-            cc: undefined,
-            tcfc: undefined,
-            fm: undefined,
-            l2l: undefined,
-            time: undefined,
           },
           clinicalInfo:{
             symptomTime:undefined,
@@ -109,38 +85,12 @@ class DescriptionForm extends PureComponent {
             <div>
               <Descriptions title="患者信息">
                 <Descriptions.Item label="患者姓名">{personInfo.name}</Descriptions.Item>
-                <Descriptions.Item label="患者标注">{wcstItem ? wcstItem.label : ''}</Descriptions.Item>
+                <Descriptions.Item label="患病类型">{wcstItem ? wcstItem.label : ''}</Descriptions.Item>
                 <Descriptions.Item label="患者编号">{number}</Descriptions.Item>
                 <Descriptions.Item label="患者性别">{personInfo.gender === 1 ? '男' : '女'}</Descriptions.Item>
                 <Descriptions.Item label="患者年龄">{personInfo.age}</Descriptions.Item>
                 <Descriptions.Item label="患者体重">{personInfo.weight}</Descriptions.Item>
-                <Descriptions.Item label="患者身高">{personInfo.height}</Descriptions.Item>
-                <Descriptions.Item label="患者药物干预">{personInfo.medicine}</Descriptions.Item>
-                <Descriptions.Item label="服药后时间">{personInfo.medicineTime}</Descriptions.Item>
-                <Descriptions.Item label="患者心理干预">{personInfo.physical}</Descriptions.Item>
-                <Descriptions.Item label="测试时间">{personInfo.testTime}</Descriptions.Item>
-              
-              </Descriptions>
-              <Divider />
-              <Descriptions title="任务测试得分">
-                <Descriptions.Item label="总应答数">{missionFormData.ta}</Descriptions.Item>
-                <Descriptions.Item label="正确应答数">{missionFormData.cr}</Descriptions.Item>
-                <Descriptions.Item label="正确应答百分比">{missionFormData.pcr}</Descriptions.Item>
-                <Descriptions.Item label="错误应答数">{missionFormData.te}</Descriptions.Item>
-                <Descriptions.Item label="错误应答数百分比">{missionFormData.pe}</Descriptions.Item>
-                <Descriptions.Item label="持续性应答数">{missionFormData.pr}</Descriptions.Item>
-                <Descriptions.Item label="持续性应答数百分比">{missionFormData.ppr}</Descriptions.Item>
-                <Descriptions.Item label="持续性错误数">{missionFormData.pse}</Descriptions.Item>
-                <Descriptions.Item label="持续性错误的百分数">{missionFormData.ppe}</Descriptions.Item>
-                <Descriptions.Item label="非持续性错误">{missionFormData.npe}</Descriptions.Item>
-                <Descriptions.Item label="非持续性错误百分比">{missionFormData.pnpe}</Descriptions.Item>
-                <Descriptions.Item label="概念化水平应答数">{missionFormData.clr}</Descriptions.Item>
-                <Descriptions.Item label="概念化水平百分数">{missionFormData.pclr}</Descriptions.Item>
-                <Descriptions.Item label="完成分类数">{missionFormData.cc}</Descriptions.Item>
-                <Descriptions.Item label="完成第一个分类所需应答数">{missionFormData.tcfc}</Descriptions.Item>
-                <Descriptions.Item label="不能维持完整分类">{missionFormData.fm}</Descriptions.Item>
-                <Descriptions.Item label="学习到学会">{missionFormData.l2l}</Descriptions.Item>
-                <Descriptions.Item label="用时">{missionFormData.time}</Descriptions.Item>
+                <Descriptions.Item label="患者身高">{personInfo.height}</Descriptions.Item>              
               </Descriptions>
               <Divider />
               <Descriptions title="临床信息">
@@ -165,14 +115,14 @@ class DescriptionForm extends PureComponent {
             handleModalVisible, 
         } = this.props;
 
-        const title = "采集信息展示——" + currentRecordId + "_" + userName;
+        const title = "患者信息展示——" + currentRecordId + "_" + userName;
 
         return(
             <Modal
                 visible={modalVisible}
                 title={title}
                 width='60%'
-                onCancel={()=> handleModalVisible(false, "description")}
+                onCancel={()=> handleModalVisible(false, "patientsDescription")}
                 destroyOnClose
             >
                 {this.renderDescription()}
@@ -180,5 +130,4 @@ class DescriptionForm extends PureComponent {
         )
     }
 }
-
-export default DescriptionForm;
+export default PatientsDescriptionForm;
