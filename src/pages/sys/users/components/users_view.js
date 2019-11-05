@@ -20,7 +20,7 @@ import {
 } from 'antd';
 import moment from 'moment';
 import PersonnalForm from './PersonnalForm';
-import MissionForm from './MissionForm';
+import MissionInfoForm from './MissionInfoForm';
 import ClinicalForm from './ClinicalForm';
 import PatientsDescriptionForm from './patientsDescription'
 import DataPathForm from './DataPathForm';
@@ -58,11 +58,11 @@ class Index extends PureComponent {
         super(props);
         this.state = {
             date: initTime,
-            modalVisible1: false, // 个人采集信息表单的视觉信息
-            modalVisible2: false, // 任务采集信息表单
-            modalVisible3: false, // 临床信息采集表单
-            modalVisible4: false, // 采集信息总体描述
-            modalVisible5: false, // 采集数据存储关联
+            modalVisible1: false, // 新建患者
+            modalVisible2: false, // 患者量表信息展示
+            modalVisible3: false, // 患者临床信息填写
+            modalVisible4: false, // 患者基本信息展示
+            modalVisible5: false, // 患者任务基本信息填写
             edit: false,
             currentRecordId: -1,
             currentUserName: 'undefined',
@@ -201,10 +201,14 @@ class Index extends PureComponent {
                 <Button type="primary" htmlType="submit">
                     查询
                 </Button>
-                <Button onClick={this.handleReset}>
+                <Button onClick={this.handleReset}
+                    style={{marginLeft: '20px'}}
+                >
                     重置
                 </Button>
-                <Button type="primary" onClick={() => this.handleModalVisible(true, 'personalInfo')}>
+                <Button type="primary"  style={{marginLeft: '20px'}}  
+                    onClick={() => this.handleModalVisible(true, 'personalInfo')}>
+                    
                     新建患者个人信息
                 </Button>
                 </Form.Item>
@@ -220,7 +224,7 @@ class Index extends PureComponent {
                 modalVisible1: !!flag,
             });
         }
-        if(msg === 'missionInfo') {
+        if(msg === 'scaleInfo') {
             this.setState({
                 edit: false,
                 modalVisible2: !!flag,
@@ -238,7 +242,7 @@ class Index extends PureComponent {
                 modalVisible4: !!flag,
             });
         }
-        if(msg === 'dataPath') {
+        if(msg === 'missionBasicInfo') {
             this.setState({
                 edit: false,
                 modalVisible5: !!flag,
@@ -256,7 +260,7 @@ class Index extends PureComponent {
                 currentUserName: record.name,
             });
         }
-        if(msg === "missionInfo") {
+        if(msg === "scaleInfo") {
             this.setState({
                 edit: true,
                 modalVisible2:!!flag,
@@ -280,7 +284,7 @@ class Index extends PureComponent {
                 currentRecordId: record.id,
             });
         }
-        if(msg === "dataPath") {
+        if(msg === "missionBasicInfo") {
             this.setState({
                 edit: true,
                 modalVisible5:!!flag,
@@ -389,7 +393,7 @@ class Index extends PureComponent {
                         </Tooltip>
                         <Divider type='vertical' />
                         <Tooltip title="新建近红外采集信息" >
-                            <Icon type="arrow-right" style={{justifyContent:'center'}}  onClick={ () =>this.handleClick(true, record, 'personalInfo')}/>
+                            <Icon type="arrow-right" style={{justifyContent:'center'}}  onClick={ () =>this.handleClick(true, record, 'missionBasicInfo')}/>
                         </Tooltip>
                     </Fragment>
                   );
@@ -462,13 +466,13 @@ class Index extends PureComponent {
                     currentRecordId={currentRecordId}
                     userName={currentUserName}
                 />)}
-                {modalVisible2 && (<MissionForm
+                {/* {modalVisible2 && (<MissionForm
                     modalVisible={modalVisible2}
                     handleModalVisible={handleModalVisible}
                     edit={edit}
                     currentRecordId={currentRecordId}
                     userName={currentUserName}
-                />)}
+                />)} */}
                 {modalVisible3 && (<ClinicalForm
                     modalVisible={modalVisible3}
                     handleModalVisible={handleModalVisible}
@@ -483,7 +487,7 @@ class Index extends PureComponent {
                     currentRecordId={currentRecordId}
                     userName={currentUserName}
                 />)}
-                {modalVisible5 && (<DataPathForm
+                {modalVisible5 && (<MissionInfoForm
                     modalVisible={modalVisible5}
                     handleModalVisible={handleModalVisible}
                     edit={edit}

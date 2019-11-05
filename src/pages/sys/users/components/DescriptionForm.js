@@ -32,8 +32,8 @@ class DescriptionForm extends PureComponent {
             name:undefined,
             wcstType: undefined , 
             medicine: undefined,
-            medicineTime : undefined,
-            physical: undefined,
+            timeAfterMed : undefined,
+            otherInter: undefined,
             testTime: undefined,
           },
           missionFormData:{
@@ -115,10 +115,10 @@ class DescriptionForm extends PureComponent {
                 <Descriptions.Item label="患者年龄">{personInfo.age}</Descriptions.Item>
                 <Descriptions.Item label="患者体重">{personInfo.weight}</Descriptions.Item>
                 <Descriptions.Item label="患者身高">{personInfo.height}</Descriptions.Item>
-                <Descriptions.Item label="患者药物干预">{personInfo.medicine}</Descriptions.Item>
-                <Descriptions.Item label="服药后时间">{personInfo.medicineTime}</Descriptions.Item>
-                <Descriptions.Item label="患者心理干预">{personInfo.physical}</Descriptions.Item>
-                <Descriptions.Item label="测试时间">{personInfo.testTime}</Descriptions.Item>
+                <Descriptions.Item label="测试前服用药物">{personInfo.medicine}</Descriptions.Item>
+                <Descriptions.Item label="服药后多久进行测试">{personInfo.timeAfterMed}</Descriptions.Item>
+                <Descriptions.Item label="非药物干预">{personInfo.otherInter}</Descriptions.Item>
+                <Descriptions.Item label="测试近红外时间">{personInfo.testTime}</Descriptions.Item>
               
               </Descriptions>
               <Divider />

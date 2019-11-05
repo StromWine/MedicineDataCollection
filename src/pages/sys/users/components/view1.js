@@ -201,7 +201,7 @@ class Index extends PureComponent {
                 <Button type="primary" htmlType="submit">
                     查询
                 </Button>
-                <Button onClick={this.handleReset}>
+                <Button style={{marginLeft: '20px'}} onClick={this.handleReset} >
                     重置
                 </Button>
                 </Form.Item>
@@ -374,10 +374,10 @@ class Index extends PureComponent {
               render: (text, record) => {
                   return(
                     <Fragment>
-                        <Tooltip title="个人采集信息">
+                        {/* <Tooltip title="个人采集信息">
                             <Icon type="edit" onClick={ () =>this.handleClick(true, record, 'personalInfo')}/>
                         </Tooltip>
-                        <Divider type='vertical' />
+                        <Divider type='vertical' /> */}
                         <Tooltip title="数据存储关联">
                             <Icon type="dropbox" onClick={ () =>this.handleClick(true, record, 'dataPath')}/>
                         </Tooltip>
@@ -385,10 +385,10 @@ class Index extends PureComponent {
                         <Tooltip title="任务测试信息">
                             <Icon type="apple" onClick={ () =>this.handleClick(true, record, 'missionInfo')}/>
                         </Tooltip>
-                        <Divider type='vertical' />
+                        {/* <Divider type='vertical' />
                         <Tooltip title="临床信息采集">
                             <Icon type="codepen-circle" onClick={ () =>this.handleClick(true, record, 'clinicalInfo')}/>
-                        </Tooltip>
+                        </Tooltip> */}
                     </Fragment>
                   );
               }
@@ -425,11 +425,11 @@ class Index extends PureComponent {
                 {/**
                  修改添加策略
                  */}
-                 <Row style={{ width: 400 }}>
+                 {/* <Row style={{ width: 400 }}>
                     <Col span={5} style={{ textAlign: 'center' }}>
                         <Button type="primary" onClick={() => this.handleModalVisible(true, 'personalInfo')}>新建个人采集信息</Button>
                     </Col>
-                </Row>
+                </Row> */}
                 <Card
                     // title="Card title"
                     style={{ marginTop: 15 }}
